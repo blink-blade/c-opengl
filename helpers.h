@@ -1,5 +1,12 @@
+#include <string>
 #include "stdint.h"
 #include "inttypes.h"
+#include "stdint.h"
+#include "glad.h" 
+#include "khrplatform.h"
+#include <GLFW/glfw3.h>
+#include "inttypes.h"
+
 
 #ifndef HELPERS
 #define HELPERS
@@ -15,5 +22,7 @@
 // extern SDL_Renderer *renderer;
 // void handleControls();
 // rectWTex getRectFromPath(char *path, int x, int y, int w, int h);
+extern void processInput(GLFWwindow *window);
+
 
 #endif
