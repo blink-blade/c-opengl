@@ -12,17 +12,13 @@
 
 using namespace std;
 
-unsigned int vertexShader;
-unsigned int fragmentShader;
-unsigned int shaderProgram;
+unsigned int vertexShader, vertexShader2;
+unsigned int fragmentShader, fragmentShader2;
+unsigned int shaderProgram, shaderProgram2;
 
-const char *vertexShaderSource = "#version 460 core\n"
-    "layout (location = 0) in vec3 aPos;\n"
-    "void main() {\n"
-    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "}\0";
+const char *vertexShaderSource, *vertexShaderSource2;
+const char *fragmentShaderSource, *fragmentShaderSource2;
 
-const char *fragmentShaderSource;
 float vertices[] = {
     0.5f,  0.5f, 0.0f,  // top right
     0.5f, -0.5f, 0.0f,  // bottom right
@@ -45,10 +41,10 @@ void setupShaders() {
     fragmentShaderSource = str.c_str();
     
     ostringstream ssstream;
-    ifstream fss("shaders/fragment_shader.glsl");
+    ifstream fss("shaders/vertex_shader.glsl");
     ssstream << fss.rdbuf();
     const string sstr(ssstream.str());
-    fragmentShaderSource = sstr.c_str();
+    vertexShaderSource = sstr.c_str();
 
     // Shader setup
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -89,7 +85,42 @@ void setupShaders() {
         cout << "ERROR::SHADER::PROGRAM::FAILED\n" << shaderInfoLog << endl;
     }
 }
+void setupShaders2() {
+    ostringstream sstream;
+    ifstream fs("shaders/yellow_fragment_shader.glsl");
+    sstream << fs.rdbuf();
+    const string str(sstream.str());
+    fragmentShaderSource2 = str.c_str();
 
+    // Shader setup
+    fragmentShader2 = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader2, 1, &fragmentShaderSource2, NULL);
+    glCompileShader(fragmentShader2);
+
+    int fragmentSuccess;
+    char fragmentInfoLog[512];
+    glGetShaderiv(fragmentShader2, GL_COMPILE_STATUS, &fragmentSuccess);
+
+    if (!fragmentShader2) {
+        glGetShaderInfoLog(fragmentShader2, 512, NULL, fragmentInfoLog);
+        cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << fragmentInfoLog << endl;
+    }
+    
+    shaderProgram2 = glCreateProgram();
+
+    glAttachShader(shaderProgram2, vertexShader);
+    glAttachShader(shaderProgram2, fragmentShader2);
+    glLinkProgram(shaderProgram2);
+
+    int shaderSuccess;
+    char shaderInfoLog[512];
+
+    glGetProgramiv(shaderProgram2, GL_LINK_STATUS, &shaderSuccess);
+    if(!shaderSuccess) {
+        glGetProgramInfoLog(shaderProgram2, 512, NULL, shaderInfoLog);
+        cout << "ERROR::SHADER::PROGRAM::FAILED\n" << shaderInfoLog << endl;
+    }
+}
 int main()
 {
     glfwInit();
@@ -116,6 +147,7 @@ int main()
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback); 
 
     setupShaders();
+    setupShaders2();
 
     glUseProgram(shaderProgram);
 
@@ -162,6 +194,7 @@ int main()
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         
+        glUseProgram(shaderProgram2);
         glBindVertexArray(VAO2);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         
@@ -171,6 +204,8 @@ int main()
 
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
+    glDeleteVertexArrays(1, &VAO2);
+    glDeleteBuffers(1, &VBO2);
     glDeleteProgram(shaderProgram);
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);     
