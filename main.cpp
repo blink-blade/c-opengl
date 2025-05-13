@@ -6,6 +6,9 @@
 #include <ostream>
 #include <iostream>
 #include "helpers.h"
+#include <string>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -13,21 +16,13 @@ unsigned int vertexShader;
 unsigned int fragmentShader;
 unsigned int shaderProgram;
 
-const char *vertexShaderSource = "#version 330 core\n"
+const char *vertexShaderSource = "#version 460 core\n"
     "layout (location = 0) in vec3 aPos;\n"
-    "void main()\n"
-    "{\n"
+    "void main() {\n"
     "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
     "}\0";
 
-const char *fragmentShaderSource = "#version 460 core\n"
-    "out vec4 FragColor;\n"
-    "void main()\n"
-    "{\n"
-    "FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-    "}\n"
-    ";\0";
-
+const char *fragmentShaderSource;
 float vertices[] = {
     0.5f,  0.5f, 0.0f,  // top right
     0.5f, -0.5f, 0.0f,  // bottom right
@@ -43,31 +38,18 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }  
 
-int main()
-{
-    // Window inits:
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-      GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
-    if (window == NULL)
-    {
-        cout << "Failed to create GLFW window" << endl;
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
-
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        cout << "Failed to initialize GLAD" << endl;
-        return -1;
-    } 
-    glViewport(0, 0, 800, 600);
-    glfwSetFramebufferSizeCallback(window, framebufferSizeCallback); 
-
+void setupShaders() {
+    ostringstream sstream;
+    ifstream fs("shaders/fragment_shader.glsl");
+    sstream << fs.rdbuf();
+    const string str(sstream.str());
+    fragmentShaderSource = str.c_str();
+    
+    ostringstream ssstream;
+    ifstream fss("shaders/fragment_shader.glsl");
+    ssstream << fss.rdbuf();
+    const string sstr(ssstream.str());
+    fragmentShaderSource = sstr.c_str();
 
     // Shader setup
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -107,6 +89,34 @@ int main()
         glGetProgramInfoLog(shaderProgram, 512, NULL, shaderInfoLog);
         cout << "ERROR::SHADER::PROGRAM::FAILED\n" << shaderInfoLog << endl;
     }
+}
+
+int main()
+{
+    glfwInit();
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+      GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
+    if (window == NULL)
+    {
+        cout << "Failed to create GLFW window" << endl;
+        glfwTerminate();
+        return -1;
+    }
+    glfwMakeContextCurrent(window);
+
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        cout << "Failed to initialize GLAD" << endl;
+        return -1;
+    } 
+    
+    glViewport(0, 0, 800, 600);
+    glfwSetFramebufferSizeCallback(window, framebufferSizeCallback); 
+
+    setupShaders();
 
     glUseProgram(shaderProgram);
 

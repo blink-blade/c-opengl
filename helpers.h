@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <string>
 #include "stdint.h"
 #include "inttypes.h"
@@ -6,11 +7,13 @@
 #include "khrplatform.h"
 #include <GLFW/glfw3.h>
 #include "inttypes.h"
-
+#include <fstream>
+#include <iostream>
 
 #ifndef HELPERS
 #define HELPERS
 
+using namespace std;
 // struct rectWTex {
 //     SDL_Rect SDLRect;
 //     SDL_Texture* texture;
@@ -23,6 +26,6 @@
 // void handleControls();
 // rectWTex getRectFromPath(char *path, int x, int y, int w, int h);
 extern void processInput(GLFWwindow *window);
-
+extern const char* readFile(string path);
 
 #endif
