@@ -18,7 +18,7 @@ using namespace std;
 //     SDL_Rect SDLRect;
 //     SDL_Texture* texture;
 // };
-
+extern int scroll;
 // extern bool running;
 // extern const uint8_t* keys;
 // extern SDL_Window* window;
@@ -26,6 +26,8 @@ using namespace std;
 // void handleControls();
 // rectWTex getRectFromPath(char *path, int x, int y, int w, int h);
 extern void processInput(GLFWwindow *window);
+extern void scrollCallback(GLFWwindow* window, double xoffset, double yoffset);
 extern const char* readFile(string path);
+extern float cameraAttrs[4];
 
 #endif

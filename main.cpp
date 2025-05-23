@@ -124,6 +124,7 @@ int main()
     glEnable(GL_DEPTH_TEST);  
     glViewport(0, 0, 800, 600);
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback); 
+    glfwSetScrollCallback(window, scrollCallback);
 
     Shader ourShader("shaders/vertex_shader.glsl", "shaders/fragment_shader.glsl");
     stbi_set_flip_vertically_on_load(true);  
@@ -224,6 +225,7 @@ int main()
     
     while(!glfwWindowShouldClose(window))   {
         processInput(window);
+        scroll = 0;
         
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -257,15 +259,12 @@ int main()
         glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
         ourShader.setFloat("mixAmount", sin(timeValue));
 
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));  
 
         glm::mat4 view = glm::mat4(1.0f);
-        // note that we're translating the scene in the reverse direction of where we want to move
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f)); 
+        view = glm::translate(view, glm::vec3(cameraAttrs[0], cameraAttrs[1], cameraAttrs[2])); 
 
         glm::mat4 projection;
-        projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+        projection = glm::perspective(glm::radians(cameraAttrs[3]), 800.0f / 600.0f, 0.1f, 100.0f);
 
         int modelLoc = glGetUniformLocation(ourShader.ID, "model");
         int viewLoc = glGetUniformLocation(ourShader.ID, "view");
