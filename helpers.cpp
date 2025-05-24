@@ -19,10 +19,22 @@
 using namespace std;
 
 // x, y, z, fov,
-float cameraAttrs[4] = {0.0f, 0.0f, -3.0f, 45.0f};
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);  
+glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
+glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f); 
+glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
+glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+int firstMouse;
+float cameraSpeed = 0.0f;
+float fov = 45.0f;
+float deltaTime = 0.0f;	// Time between current frame and last frame
+float lastFrame = 0.0f; // Time of last frame
 // -1 = down, 0 = none, 1 = up.
 int scroll = 0;
-
+int lastX, lastY;
+float xoffset, yaw, pitch;
 const char* readFile(string path) {
     ostringstream sstream;
     std::ifstream fs(path);
@@ -48,37 +60,67 @@ void scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
     }
 }
 
+void mouseCallback(GLFWwindow* window, double xpos, double ypos) {
+    if (firstMouse)
+    {
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
+    }
+  
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos; 
+    lastX = xpos;
+    lastY = ypos;
+
+    float sensitivity = 0.1f;
+    xoffset *= sensitivity;
+    yoffset *= sensitivity;
+
+    yaw += xoffset;
+    pitch += yoffset;
+
+    if(pitch > 89.0f)
+        pitch = 89.0f;
+    if(pitch < -89.0f)
+        pitch = -89.0f;
+
+    glm::vec3 direction;
+    direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+    direction.y = sin(glm::radians(pitch));
+    direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+    cameraFront = glm::normalize(direction);
+}  
+
 void processInput(GLFWwindow *window) {
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
     }
-    if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        cameraAttrs[0] -= 0.1;
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+        cameraPos += cameraSpeed * glm::vec3(cameraFront.x, 0.0f, cameraFront.z);
     }
-    // Movement:
-    if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        cameraAttrs[0] += 0.1;
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+        cameraPos -= cameraSpeed * glm::vec3(cameraFront.x, 0.0f, cameraFront.z);
     }
-    if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-        cameraAttrs[1] -= 0.1;
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
     }
-    if(glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-        cameraAttrs[1] += 0.1;
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
     }
-    if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        cameraAttrs[2] -= 0.1;
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+        cameraPos += cameraSpeed * glm::vec3(0.0f, 1.0f, 0.0f);
     }
-    if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        cameraAttrs[2] += 0.1;
-    }   
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+        cameraPos -= cameraSpeed * glm::vec3(0.0f, 1.0f, 0.0f);
+    }
+    // if(scroll == 1) {
+    //     cameraAttrs[3] -= 2;
+    // }
 
-    if(scroll == 1) {
-        cameraAttrs[3] -= 2;
-    }
-
-    if(scroll == -1) {
-        cameraAttrs[3] += 2;
-    }
+    // if(scroll == -1) {
+    //     cameraAttrs[3] += 2;
+    // }
     // cout << cameraAttrs[3] << "\n";
 
 }
