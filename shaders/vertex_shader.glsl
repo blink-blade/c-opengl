@@ -31,14 +31,31 @@ mat4 rotationMatrix(float angleX, float angleY, float angleZ) {
                 0.0, 0.0, 0.0, 1.0);
 }
 
+uint hash( uint x ) {
+    x += ( x << 10u );
+    x ^= ( x >>  6u );
+    x += ( x <<  3u );
+    x ^= ( x >> 11u );
+    x += ( x << 15u );
+    return x;
+}
+
 void main()
 {
+    int radius = 10;
     //gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
-    mat4 translation = mat4(1.0, 0.0, 0.0, 1.0,
-                0.0, 1.0, 0.0, 0.0,
-                0.0, 0.0, 1.0, 0.0,
+    float x = sin(gl_InstanceID + 1) - 0.5;
+    float y = cos(gl_InstanceID + 1) - 0.5;
+    float z = sin(gl_InstanceID + 1) - 0.5;
+    float normalizer = 1/sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
+    float xTrans = x * normalizer * radius;
+    float yTrans = y * normalizer * radius;
+    float ZTrans = z * normalizer * radius;
+    mat4 translation = mat4(1.0, 0.0, 0.0, xTrans,
+                0.0, 1.0, 0.0, yTrans,
+                0.0, 0.0, 1.0, ZTrans,
                 0.0, 0.0, 0.0, 1.0);
-    gl_Position = projection * view * instanceMatrix * (vec4(aPos.x, aPos.y, aPos.z, 1.0) * rotationMatrix(time, 0.0, 0.0));
+    gl_Position = projection * view * instanceMatrix * (vec4(aPos.x, aPos.y, aPos.z, 1.0) * translation * rotationMatrix(0.0, 0.0, gl_InstanceID));
     //gl_Position = transform * vec4(aPos.x, aPos.y, aPos.z, 1.0);
     //gl_Position = projection * view * model * vec4(aPos, 1.0);
     ourColor = aColor; // set ourColor to the input color we got from the vertex data

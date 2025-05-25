@@ -77,8 +77,8 @@ float vertices[] = {
     -0.5f,  0.5f,  0.5f,   0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
     -0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 0.0f,  0.0f, 1.0f
 };
-const int amount = 2500000;
-const int radius = 200;
+const int amount = 100000;
+const int radius = 10;
 
 glm::vec3 cubePositions[amount];
 glm::mat4* modelMatrices;
@@ -105,6 +105,9 @@ void makeCubePositions() {
         cubePositions[i][0] = x * normalizer * radius;
         cubePositions[i][1] = y * normalizer * radius;
         cubePositions[i][2] = z * normalizer * radius;
+        cubePositions[i][0] = 0.0;
+        cubePositions[i][1] = 0.0;
+        cubePositions[i][2] = 0.0;
     }
 }
 
