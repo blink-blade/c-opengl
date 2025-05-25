@@ -77,7 +77,7 @@ float vertices[] = {
     -0.5f,  0.5f,  0.5f,   0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
     -0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 0.0f,  0.0f, 1.0f
 };
-const int amount = 3000000;
+const int amount = 2500000;
 
 glm::vec3 cubePositions[amount];
 glm::mat4* modelMatrices;
@@ -93,9 +93,9 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
 void makeCubePositions() {
     srand(time(0));
     for (int i = 0; i < amount; i++) {
-        float x = ((rand() % 5000) + 1) - 2500;
-        float y = ((rand() % 5000) + 1) - 2500;
-        float z = ((rand() % 5000) + 1) - 2500;
+        float x = ((rand() % 1000) + 1) - 500;
+        float y = ((rand() % 1000) + 1) - 500;
+        float z = ((rand() % 1000) + 1) - 500;
         cubePositions[i][0] = x;
         cubePositions[i][1] = y;
         cubePositions[i][2] = z;
@@ -182,8 +182,7 @@ glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
     modelMatrices = new glm::mat4[amount];
-    for (unsigned int i = 0; i < amount; i++)
-    {
+    for (unsigned int i = 0; i < amount; i++) {
         glm::mat4 model = glm::mat4(1.0f);
         // 1. translation: displace along circle with 'radius' in range [-offset, offset]
         model = glm::translate(model, cubePositions[i]);
@@ -222,9 +221,20 @@ glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
     cout << "Maximum nr of vertex attributes supported: " << nrAttributes << endl;
 
-    glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)width/(float)height, 0.1f, 100.0f);
+
+
 
     while(!glfwWindowShouldClose(window))   {
+        // glBindBuffer(GL_ARRAY_BUFFER, buffer);
+        // glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
+        // glEnableVertexAttribArray(3); 
+    // glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)0);
+    // glEnableVertexAttribArray(4); 
+    // glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(1 * vec4Size));
+    // glEnableVertexAttribArray(5); 
+    // glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(2 * vec4Size));
+    // glEnableVertexAttribArray(6); 
+    // glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(3 * vec4Size));
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;  
@@ -270,16 +280,28 @@ glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
         glm::mat4 projection;
-        projection = glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.1f, 10000.0f);
+        projection = glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.1f, 2000.0f);
 
 
         int viewLoc = glGetUniformLocation(ourShader.ID, "view");
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
         int projectionLoc = glGetUniformLocation(ourShader.ID, "projection");
         glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
-        glm::mat4 model = glm::mat4(1.0f);
-
-        model = glm::rotate(model, (float)glfwGetTime() * glm::radians(0.0f), glm::vec3(1.0f, 0.3f, 0.5f));
+        // glm::mat4 model = glm::mat4(1.0f);
+        int timeLoc = glGetUniformLocation(ourShader.ID, "time");
+        glUniform1f(timeLoc, (float)glfwGetTime());
+        cout << (float)glfwGetTime() << "\n";
+        // model = glm::rotate(model, (float)glfwGetTime() * glm::radians(0.0f), glm::vec3(1.0f, 0.3f, 0.5f));
+        glm::mat4 baseModel = glm::mat4(1.0f);
+        baseModel = glm::rotate(baseModel, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(1.0f, 0.3f, 0.5f));
+        for (unsigned int i = 0; i < amount; i++) {
+            // 1. translation: displace along circle with 'radius' in range [-offset, offset]
+            
+    
+            // 4. now add to list of matrices
+            modelMatrices[i] = baseModel;
+        }
+        
 
         // draw the object
         glBindVertexArray(VAO);
@@ -301,6 +323,7 @@ glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &buffer);
     glDeleteProgram(shaderProgram);
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);     
