@@ -78,6 +78,7 @@ float vertices[] = {
     -0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 0.0f,  0.0f, 1.0f
 };
 const int amount = 25000;
+const int radius = 200;
 
 glm::vec3 cubePositions[amount];
 glm::mat4* modelMatrices;
@@ -92,13 +93,18 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
 
 void makeCubePositions() {
     srand(time(0));
+    float normalizer;
     for (int i = 0; i < amount; i++) {
         float x = ((rand() % 1000) + 1) - 500;
         float y = ((rand() % 1000) + 1) - 500;
         float z = ((rand() % 1000) + 1) - 500;
-        cubePositions[i][0] = x;
-        cubePositions[i][1] = y;
-        cubePositions[i][2] = z;
+        if (x == 0.0) {x = 1.0;}
+        if (y == 0.0) {y = 1.0;}
+        if (z == 0.0) {z = 1.0;}
+        normalizer = 1/sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
+        cubePositions[i][0] = x * normalizer;
+        cubePositions[i][1] = y * normalizer;
+        cubePositions[i][2] = z * normalizer;
     }
 }
 
