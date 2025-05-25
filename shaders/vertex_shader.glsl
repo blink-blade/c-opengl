@@ -34,7 +34,11 @@ mat4 rotationMatrix(float angleX, float angleY, float angleZ) {
 void main()
 {
     //gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
-    gl_Position = projection * view * instanceMatrix * rotationMatrix(time, -time, time) * vec4(aPos.x + time * 10, aPos.y, aPos.z, 1.0);
+    mat4 translation = mat4(1.0, 0.0, 0.0, 1.0,
+                0.0, 1.0, 0.0, 0.0,
+                0.0, 0.0, 1.0, 0.0,
+                0.0, 0.0, 0.0, 1.0);
+    gl_Position = projection * view * instanceMatrix * (vec4(aPos.x, aPos.y, aPos.z, 1.0) * translation * rotationMatrix(time, 0.0, 0.0));
     //gl_Position = transform * vec4(aPos.x, aPos.y, aPos.z, 1.0);
     //gl_Position = projection * view * model * vec4(aPos, 1.0);
     ourColor = aColor; // set ourColor to the input color we got from the vertex data

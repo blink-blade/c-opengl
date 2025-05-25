@@ -77,7 +77,7 @@ float vertices[] = {
     -0.5f,  0.5f,  0.5f,   0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
     -0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 0.0f,  0.0f, 1.0f
 };
-const int amount = 2500000;
+const int amount = 25000;
 
 glm::vec3 cubePositions[amount];
 glm::mat4* modelMatrices;
@@ -116,7 +116,7 @@ int main()
         glfwTerminate();
         return -1;
     }
-glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
     glfwMakeContextCurrent(window);
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -130,7 +130,8 @@ glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetScrollCallback(window, scrollCallback);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
     glfwSetCursorPosCallback(window, mouseCallback);  
-    Shader ourShader("shaders/vertex_shader.glsl", "shaders/fragment_shader.glsl");
+    Shader cubeShader("shaders/vertex_shader.glsl", "shaders/fragment_shader.glsl");
+    Shader cubePosShader("shaders/vertex_shader2.glsl", "shaders/fragment_shader2.glsl");
     stbi_set_flip_vertically_on_load(true);  
 
     unsigned int texture;
@@ -156,9 +157,9 @@ glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     stbi_image_free(data);
     makeCubePositions();
 
-    ourShader.use(); // don't forget to activate/use the shader before setting uniforms!
+    cubeShader.use(); // don't forget to activate/use the shader before setting uniforms!
     // either set it manually like so:
-    glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0);
+    glUniform1i(glGetUniformLocation(cubeShader.ID, "texture1"), 0);
 
     // Rendering stuff.
     unsigned int VBO, VAO;
@@ -225,20 +226,10 @@ glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 
     while(!glfwWindowShouldClose(window))   {
-        // glBindBuffer(GL_ARRAY_BUFFER, buffer);
-        // glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
-        // glEnableVertexAttribArray(3); 
-    // glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)0);
-    // glEnableVertexAttribArray(4); 
-    // glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(1 * vec4Size));
-    // glEnableVertexAttribArray(5); 
-    // glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(2 * vec4Size));
-    // glEnableVertexAttribArray(6); 
-    // glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(3 * vec4Size));
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;  
-        cameraSpeed = 2.5f * deltaTime;
+        cameraSpeed = 15.5f * deltaTime;
         processInput(window);
         scroll = 0;
         
@@ -263,59 +254,37 @@ glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         // glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
         // ourShader.setFloat("mixAmount", sin(timeValue));
 
-
-        // update the uniform color
-        float timeValue = glfwGetTime();
-        float greenValue = sin(timeValue);
-        ourShader.use();
-        int vertexColorLocation = glGetUniformLocation(ourShader.ID, "timeOffsetColor");
-        glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
-        ourShader.setFloat("mixAmount", sin(timeValue));
-
-
-        const float radius = 10.0f;
-        float camX = sin(glfwGetTime()) * radius;
-        float camZ = cos(glfwGetTime()) * radius;
         glm::mat4 view;
         view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
         glm::mat4 projection;
         projection = glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.1f, 2000.0f);
 
-
-        int viewLoc = glGetUniformLocation(ourShader.ID, "view");
+        cubePosShader.use();
+        int viewLoc = glGetUniformLocation(cubePosShader.ID, "view");
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-        int projectionLoc = glGetUniformLocation(ourShader.ID, "projection");
+        int projectionLoc = glGetUniformLocation(cubePosShader.ID, "projection");
         glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
-        // glm::mat4 model = glm::mat4(1.0f);
-        int timeLoc = glGetUniformLocation(ourShader.ID, "time");
+        int timeLoc = glGetUniformLocation(cubePosShader.ID, "time");
         glUniform1f(timeLoc, (float)glfwGetTime());
-        cout << (float)glfwGetTime() << "\n";
-        // model = glm::rotate(model, (float)glfwGetTime() * glm::radians(0.0f), glm::vec3(1.0f, 0.3f, 0.5f));
-        glm::mat4 baseModel = glm::mat4(1.0f);
-        baseModel = glm::rotate(baseModel, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(1.0f, 0.3f, 0.5f));
-        for (unsigned int i = 0; i < amount; i++) {
-            // 1. translation: displace along circle with 'radius' in range [-offset, offset]
-            
-    
-            // 4. now add to list of matrices
-            modelMatrices[i] = baseModel;
-        }
-        
+
+        glBindVertexArray(VAO);
+        glDrawArraysInstanced(GL_TRIANGLES, 0, 36, amount); 
+
+
+        cubeShader.use();
+        float timeValue = glfwGetTime();
+        float greenValue = sin(timeValue);
+        cubeShader.setFloat("timeOffsetColor", sin(timeValue));
+        viewLoc = glGetUniformLocation(cubeShader.ID, "view");
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+        projectionLoc = glGetUniformLocation(cubeShader.ID, "projection");
+        glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+        timeLoc = glGetUniformLocation(cubeShader.ID, "time");
+        glUniform1f(timeLoc, (float)glfwGetTime());
 
         // draw the object
         glBindVertexArray(VAO);
-        // for(unsigned int i = 0; i < 10000; i++)
-        // {
-        //     glm::mat4 model = glm::mat4(1.0f);
-        //     model = glm::translate(model, cubePositions[i]);
-        //     float angle = 20.0f * i; 
-        //     model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(1.0f, 0.3f, 0.5f));
-        //     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-        //     glDrawArrays(GL_TRIANGLES, 0, 36);
-        // }
-        // glDrawElementsInstanced(
-            // GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0, 10000);
         glDrawArraysInstanced(GL_TRIANGLES, 0, 36, amount); 
         glfwSwapBuffers(window);
         glfwPollEvents();    
