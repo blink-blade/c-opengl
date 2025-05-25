@@ -102,7 +102,7 @@ void makeCubePositions() {
         if (y == 0.0) {y = 1.0;}
         if (z == 0.0) {z = 1.0;}
         normalizer = 1/sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
-        cubePositions[i][0] = x * normalizer;
+        cubePositions[i][0] = x * normalizer * radius;
         cubePositions[i][1] = y * normalizer;
         cubePositions[i][2] = z * normalizer;
     }
