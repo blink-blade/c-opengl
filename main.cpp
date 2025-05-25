@@ -77,7 +77,7 @@ float vertices[] = {
     -0.5f,  0.5f,  0.5f,   0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
     -0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 0.0f,  0.0f, 1.0f
 };
-const int amount = 25000;
+const int amount = 2500000;
 const int radius = 200;
 
 glm::vec3 cubePositions[amount];
@@ -103,8 +103,8 @@ void makeCubePositions() {
         if (z == 0.0) {z = 1.0;}
         normalizer = 1/sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
         cubePositions[i][0] = x * normalizer * radius;
-        cubePositions[i][1] = y * normalizer;
-        cubePositions[i][2] = z * normalizer;
+        cubePositions[i][1] = y * normalizer * radius;
+        cubePositions[i][2] = z * normalizer * radius;
     }
 }
 
@@ -266,16 +266,16 @@ int main()
         glm::mat4 projection;
         projection = glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.1f, 2000.0f);
 
-        cubePosShader.use();
+        // cubePosShader.use();
         int viewLoc = glGetUniformLocation(cubePosShader.ID, "view");
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+        // glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
         int projectionLoc = glGetUniformLocation(cubePosShader.ID, "projection");
-        glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+        // glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
         int timeLoc = glGetUniformLocation(cubePosShader.ID, "time");
-        glUniform1f(timeLoc, (float)glfwGetTime());
+        // glUniform1f(timeLoc, (float)glfwGetTime());
 
-        glBindVertexArray(VAO);
-        glDrawArraysInstanced(GL_TRIANGLES, 0, 36, amount); 
+        // glBindVertexArray(VAO);
+        // glDrawArraysInstanced(GL_TRIANGLES, 0, 36, amount); 
 
 
         cubeShader.use();
