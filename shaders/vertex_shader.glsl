@@ -42,6 +42,7 @@ uint hash( uint x ) {
 
 void main()
 {
+<<<<<<< HEAD
     int radius = 10;
     //gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
     float x = sin(gl_InstanceID + 1) - 0.5;
@@ -56,8 +57,11 @@ void main()
                 0.0, 0.0, 1.0, ZTrans,
                 0.0, 0.0, 0.0, 1.0);
     gl_Position = projection * view * instanceMatrix * (vec4(aPos.x, aPos.y, aPos.z, 1.0) * translation * rotationMatrix(0.0, 0.0, gl_InstanceID));
+=======
+    gl_Position = projection * view * instanceMatrix * rotationMatrix(time, 0.0, 0.0) * vec4(aPos.x, aPos.y, aPos.z, 1.0);
+>>>>>>> temporary
     //gl_Position = transform * vec4(aPos.x, aPos.y, aPos.z, 1.0);
     //gl_Position = projection * view * model * vec4(aPos, 1.0);
-    ourColor = aColor; // set ourColor to the input color we got from the vertex data
-    TexCoord = aTexCoord;
+    //ourColor = aColor; // set ourColor to the input color we got from the vertex data
+    //TexCoord = aTexCoord;
 }
