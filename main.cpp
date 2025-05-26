@@ -38,52 +38,47 @@ float vertices[] = {
     -0.5f, -0.5f, -0.5f,   1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
      0.5f, -0.5f, -0.5f,   0.0f, 1.0f, 0.0f,  1.0f, 0.0f,
      0.5f,  0.5f, -0.5f,   0.0f, 0.0f, 1.0f,  1.0f, 1.0f,
-    //  0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 0.0f,  1.0f, 1.0f,
-    // -0.5f,  0.5f, -0.5f,   1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-    // -0.5f, -0.5f, -0.5f,   0.0f, 1.0f, 0.0f,  0.0f, 0.0f,
+     0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 0.0f,  1.0f, 1.0f,
+    -0.5f,  0.5f, -0.5f,   1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,   0.0f, 1.0f, 0.0f,  0.0f, 0.0f,
 
-    // -0.5f, -0.5f,  0.5f,   0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
-    //  0.5f, -0.5f,  0.5f,   1.0f, 1.0f, 0.0f,  1.0f, 0.0f,
-    //  0.5f,  0.5f,  0.5f,   1.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-    //  0.5f,  0.5f,  0.5f,   0.0f, 1.0f, 0.0f,  1.0f, 1.0f,
-    // -0.5f,  0.5f,  0.5f,   0.0f, 0.0f, 1.0f,  0.0f, 1.0f,
-    // -0.5f, -0.5f,  0.5f,   1.0f, 1.0f, 0.0f,  0.0f, 0.0f,
+    -0.5f, -0.5f,  0.5f,   0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
+     0.5f, -0.5f,  0.5f,   1.0f, 1.0f, 0.0f,  1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,   1.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,   0.0f, 1.0f, 0.0f,  1.0f, 1.0f,
+    -0.5f,  0.5f,  0.5f,   0.0f, 0.0f, 1.0f,  0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,   1.0f, 1.0f, 0.0f,  0.0f, 0.0f,
 
-    // -0.5f,  0.5f,  0.5f,   1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-    // -0.5f,  0.5f, -0.5f,   0.0f, 1.0f, 0.0f,  1.0f, 1.0f,
-    // -0.5f, -0.5f, -0.5f,   0.0f, 0.0f, 1.0f,  0.0f, 1.0f,
-    // -0.5f, -0.5f, -0.5f,   1.0f, 1.0f, 0.0f,  0.0f, 1.0f,
-    // -0.5f, -0.5f,  0.5f,   1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-    // -0.5f,  0.5f,  0.5f,   0.0f, 1.0f, 0.0f,  1.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f,   1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f,   0.0f, 1.0f, 0.0f,  1.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,   0.0f, 0.0f, 1.0f,  0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,   1.0f, 1.0f, 0.0f,  0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,   1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f,   0.0f, 1.0f, 0.0f,  1.0f, 0.0f,
 
-    //  0.5f,  0.5f,  0.5f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f,
-    //  0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 0.0f,  1.0f, 1.0f,
-    //  0.5f, -0.5f, -0.5f,   1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-    //  0.5f, -0.5f, -0.5f,   0.0f, 1.0f, 0.0f,  0.0f, 1.0f,
-    //  0.5f, -0.5f,  0.5f,   0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
-    //  0.5f,  0.5f,  0.5f,   1.0f, 1.0f, 0.0f,  1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f,
+     0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 0.0f,  1.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,   1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,   0.0f, 1.0f, 0.0f,  0.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,   0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,   1.0f, 1.0f, 0.0f,  1.0f, 0.0f,
 
-    // -0.5f, -0.5f, -0.5f,   1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-    //  0.5f, -0.5f, -0.5f,   0.0f, 1.0f, 0.0f,  1.0f, 1.0f,
-    //  0.5f, -0.5f,  0.5f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f,
-    //  0.5f, -0.5f,  0.5f,   1.0f, 1.0f, 0.0f,  1.0f, 0.0f,
-    // -0.5f, -0.5f,  0.5f,   1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-    // -0.5f, -0.5f, -0.5f,   0.0f, 1.0f, 0.0f,  0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,   1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,   0.0f, 1.0f, 0.0f,  1.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f,
+     0.5f, -0.5f,  0.5f,   1.0f, 1.0f, 0.0f,  1.0f, 0.0f,
+    -0.5f, -0.5f,  0.5f,   1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,   0.0f, 1.0f, 0.0f,  0.0f, 1.0f,
 
-    // -0.5f,  0.5f, -0.5f,   0.0f, 0.0f, 1.0f,  0.0f, 1.0f,
-    //  0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 0.0f,  1.0f, 1.0f,
-    //  0.5f,  0.5f,  0.5f,   1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-    //  0.5f,  0.5f,  0.5f,   0.0f, 1.0f, 0.0f,  1.0f, 0.0f,
-    // -0.5f,  0.5f,  0.5f,   0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
-    // -0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 0.0f,  0.0f, 1.0f
+    -0.5f,  0.5f, -0.5f,   0.0f, 0.0f, 1.0f,  0.0f, 1.0f,
+     0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 0.0f,  1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,   1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,   0.0f, 1.0f, 0.0f,  1.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f,   0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 0.0f,  0.0f, 1.0f
 };
-<<<<<<< HEAD
-const int amount = 100000;
-const int radius = 10;
-=======
-const int amount = 50000000;
+const int amount = 1000000;
 const int radius = 1000;
->>>>>>> temporary
 
 glm::vec3 cubePositions[amount];
 glm::mat4* modelMatrices;
@@ -100,28 +95,12 @@ void makeCubePositions() {
     srand(time(0));
     float normalizer;
     for (int i = 0; i < amount; i++) {
-<<<<<<< HEAD
         float x = ((rand() % 1000) + 1) - 500;
         float y = ((rand() % 1000) + 1) - 500;
         float z = ((rand() % 1000) + 1) - 500;
-        if (x == 0.0) {x = 1.0;}
-        if (y == 0.0) {y = 1.0;}
-        if (z == 0.0) {z = 1.0;}
-        normalizer = 1/sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
-        cubePositions[i][0] = x * normalizer * radius;
-        cubePositions[i][1] = y * normalizer * radius;
-        cubePositions[i][2] = z * normalizer * radius;
-        cubePositions[i][0] = 0.0;
-        cubePositions[i][1] = 0.0;
-        cubePositions[i][2] = 0.0;
-=======
-        float x = ((rand() % 10000) + 1) - 5000;
-        float y = ((rand() % 10000) + 1) - 5000;
-        float z = ((rand() % 10000) + 1) - 5000;
         cubePositions[i][0] = x;
         cubePositions[i][1] = y;
         cubePositions[i][2] = z;
->>>>>>> temporary
     }
 }
 
@@ -252,11 +231,7 @@ int main()
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;  
-<<<<<<< HEAD
-        cameraSpeed = 15.5f * deltaTime;
-=======
         cameraSpeed = 50.5f * deltaTime;
->>>>>>> temporary
         processInput(window);
         scroll = 0;
         
@@ -299,20 +274,13 @@ int main()
         // glDrawArraysInstanced(GL_TRIANGLES, 0, 36, amount); 
 
         // cubePosShader.use();
-        int viewLoc = glGetUniformLocation(cubePosShader.ID, "view");
+        // viewLoc = glGetUniformLocation(cubePosShader.ID, "view");
         // glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-        int projectionLoc = glGetUniformLocation(cubePosShader.ID, "projection");
+        // projectionLoc = glGetUniformLocation(cubePosShader.ID, "projection");
         // glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
-        int timeLoc = glGetUniformLocation(cubePosShader.ID, "time");
+        // timeLoc = glGetUniformLocation(cubePosShader.ID, "time");
         // glUniform1f(timeLoc, (float)glfwGetTime());
 
-<<<<<<< HEAD
-        // glBindVertexArray(VAO);
-        // glDrawArraysInstanced(GL_TRIANGLES, 0, 36, amount); 
-
-
-=======
->>>>>>> temporary
         cubeShader.use();
         float timeValue = glfwGetTime();
         float greenValue = sin(timeValue);
@@ -326,11 +294,7 @@ int main()
 
         // draw the object
         glBindVertexArray(VAO);
-<<<<<<< HEAD
         glDrawArraysInstanced(GL_TRIANGLES, 0, 36, amount); 
-=======
-        glDrawArraysInstanced(GL_TRIANGLES, 0, 3, amount); 
->>>>>>> temporary
         glfwSwapBuffers(window);
         glfwPollEvents();    
     }
