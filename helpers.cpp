@@ -72,7 +72,12 @@ void mouseCallback(GLFWwindow* window, double xpos, double ypos) {
     float yoffset = lastY - ypos; 
     lastX = xpos;
     lastY = ypos;
-
+    if (xoffset > 15) {
+        xoffset = 0;
+    }
+    if (yoffset > 15) {
+        yoffset = 0;
+    }
     float sensitivity = 0.1f;
     xoffset *= sensitivity;
     yoffset *= sensitivity;
@@ -97,10 +102,10 @@ void processInput(GLFWwindow *window) {
         glfwSetWindowShouldClose(window, true);
     }
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        cameraPos += cameraSpeed * glm::vec3(cameraFront.x, 0.0f, cameraFront.z);
+        cameraPos += cameraSpeed * cameraFront;
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        cameraPos -= cameraSpeed * glm::vec3(cameraFront.x, 0.0f, cameraFront.z);
+        cameraPos -= cameraSpeed * cameraFront;
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
         cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
